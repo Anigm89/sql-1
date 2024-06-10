@@ -38,6 +38,7 @@ select * from usuarios_lenguajes where lenguaje is null
 
 -- Ejercicio 10: Encontrar el nombre y edad del usuario más joven.
 select nombre , edad from usuarios_lenguajes where edad = ( select MIN(edad) from usuarios_lenguajes)
+select nombre , edad from usuarios_lenguajes order by edad asc limit 1
 
 
 -- Ejercicio 11: Seleccionar los usuarios y sus edades ordenados por edad de forma descendente.
@@ -51,6 +52,7 @@ select * from usuarios_lenguajes  where apellido like '%a%'
 
 -- Ejercicio 14: Encontrar el lenguaje más popular entre los usuarios menores de 30 años.
 select lenguaje, count(*) as usuarios from usuarios_lenguajes  where edad < 30 group by lenguaje
+--otra: SELECT  max(lenguaje) FROM usuarios_lenguajes where edad >30 GROUP BY lenguaje ORDER BY  max(lenguaje)  DESC LIMIT 1 ;
 
 -- Ejercicio 15: Seleccionar el usuario  mayor de 25 y que sepa el lenguaje 'TypeScript'.
 select * from usuarios_lenguajes  where edad > 25 and lenguaje like 'TypeScript'
@@ -68,12 +70,12 @@ select * from usuarios_lenguajes  where email like '%example%'
 select * from usuarios_lenguajes  where lenguaje is not null and edad between 25 and 35
 
 -- Ejercicio 20: Contar cuántos usuarios tienen un lenguaje asociado llamado 'CSS' y tienen menos de 30 años.
-select count(*) from usuarios_lenguajes  where lenguaje like 'CSS' and edad < 25
+select count(*) from usuarios_lenguajes  where lenguaje like 'CSS' and edad < 30
 
 -- Ejercicio 21: Seleccionar los usuarios que tienen al menos un lenguaje asociado y mostrar la cantidad de lenguajes que tienen.
 -- No funciona
 SELECT *, COUNT(lenguaje) AS cantidad_lenguajes FROM usuarios_lenguajes GROUP BY lenguaje HAVING COUNT(lenguaje) > 0;
-
+select id_usuario,nombre, apellido, count(lenguaje)  FROM usuarios_lenguajes where lenguaje is not null group by id_usuario,nombre, apellido 
 
 -- Ejercicio 22: Encontrar el lenguaje con más caracteres.
 select lenguaje from usuarios_lenguajes order by length(lenguaje) desc limit 1
@@ -101,10 +103,10 @@ select count(*) from usuarios_lenguajes where apellido like 'G%'
 
 
 -- Ejercicio 29: Seleccionar los usuarios que tienen lenguajes que empiecen por 'J' y mostrar solo el que tiene menos caracteres. 
-select * from usuarios_lenguajes where lenguaje like 'J%' order by length(lenguaje) asc limit 1
+select * from usuarios_lenguajes where lenguaje like 'J%' order by length(lenguaje) desc limit 1
 
 -- Ejercicio 30: Encontrar el usuario con edad mayor a 30 y que sabe el lenguaje con menos caracteres.
-select * from usuarios_lenguajes where edad > 30 order by length(lenguaje) asc
+select * from usuarios_lenguajes where edad > 30 order by length(lenguaje) asc limit 1
 
 -- Ejercicio 31: Seleccionar los usuarios que saben al menos un lenguaje y ordenarlos por nombre de lenguaje. 
 select * from usuarios_lenguajes where lenguaje is not null order by lenguaje asc
@@ -113,10 +115,10 @@ select * from usuarios_lenguajes where lenguaje is not null order by lenguaje as
 select count(*) from usuarios_lenguajes where edad between 20 and 25 and lenguaje is not null
 
 -- Ejercicio 33: Seleccionar los usuarios que no tienen un lenguaje asociado llamado 'SQL'.
-select * from usuarios_lenguajes where  lenguaje like 'SQL'
+select * from usuarios_lenguajes where  lenguaje != 'SQL'
 
 -- Ejercicio 34: Encontrar el lenguaje con más caracteres entre los usuarios que tienen al menos 30 años.
-select * from usuarios_lenguajes where  edad < 30 order by length(lenguaje) desc
+select * from usuarios_lenguajes where  edad >= 30 order by length(lenguaje) desc limit 1
 
 -- Ejercicio 35: Seleccionar los usuarios y mostrar la diferencia entre su edad y la edad promedio de todos los usuarios
 SELECT *, edad - (SELECT AVG(edad) FROM usuarios_lenguajes) AS diferencia_edad FROM usuarios_lenguajes;
